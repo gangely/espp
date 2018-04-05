@@ -11,7 +11,7 @@
 # clarify 'global state' (needed for xor function)
 # auto starting main() does not work
 # trying deepsleep -> see sub_led_deepsleep.py
-# measuring sleep consumption
+# measuring sleep consumption 130mA
 
 from umqtt.simple import MQTTClient
 from machine import Pin
