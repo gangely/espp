@@ -1,7 +1,8 @@
 # sub_led_pub_dht.py
 # uses mqtt.simple
-# topic esp32/led
-# process msg on/off/toggle
+# topics esp32/led esp32/temp_humidity esp32/sta
+# do process msg on/off/toggle
+
 # history:
 # example_sub_led.py adapted for ESP32; uses xor for toggle
 # replaced wait_msg() by check_msg()
@@ -12,11 +13,14 @@
 # auto starting main() does not work
 # measuring sleep consumption
 # adding code for publishing dht
-# replaced c by client
+# replaced 'c' by 'client'
 # add print_pub_status()
-# DON'T publish while in callback
+# => DON'T use publishing while in callback
 # 20180405 problem?? free GC is lowering by 256 at each pass
-# * ledstate variable?
+# 20180407 with deepsleep:
+#   * MQTT raises sometimes (often) an OSError 118 and stops with "no AP found" message
+#   * no message are found by check.msg(), even when called twice
+
 
 ### user definitions ###
 # Default MQTT server to connect to
@@ -38,7 +42,7 @@ import ubinascii
 import machine
 import micropython
 CLIENT_ID = ubinascii.hexlify(machine.unique_id())
-print(CLIENT_ID)
+print("MQTT client ID is {}".format(CLIENT_ID))
 
 ### LED ###
 from machine import Pin
@@ -58,7 +62,9 @@ from machine import RTC
 rtc=RTC()
 
 
+###################
 ##### methods #####
+###################
 
 
 ### print/publish status message ###
@@ -67,7 +73,7 @@ def print_pub_status(statusmsg):
     client.publish(TOPICSTA, statusmsg, qos=QOSSTA)
 
 
-### message callback for led ###
+### message callback to set led state ###
 ledstate = 0
 def sub_cb(topic, msg):
     #ledstate = 0
@@ -119,13 +125,18 @@ def publish_dht():
             #client.publish(TOPICSTA, err2, qos=QOSSTA)
 
 
+################
 ##### main #####
+################
+
 
 def main(server=SERVER):
     #client = MQTTClient(CLIENT_ID, server)
     # Subscribed messages will be delivered to this callback
     client.set_callback(sub_cb)
+    print("connecting MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
     client.connect()
+    print("subcribing to topic")
     client.subscribe(TOPIC)
     print_pub_status("Connected to {}, subscribed to {} topic".format(server, TOPIC))
 
@@ -139,11 +150,14 @@ def main(server=SERVER):
             print_pub_status("led state is {}".format(ledstate))
             # 2. publish dht
             publish_dht()
+            client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg() 
+            print_pub_status("led state is {}".format(ledstate))
             # sleep
             print_pub_status('going to sleep')
-            sleep(60)
+            sleep(5)
             print_pub_status('waking from sleep')
-            #deepsleep(10000)
+            print('going to deepsleep')
+            deepsleep(5000)
     finally:
         client.disconnect()
 
@@ -151,4 +165,6 @@ def main(server=SERVER):
 #    main()
 
 main()
+
+
 

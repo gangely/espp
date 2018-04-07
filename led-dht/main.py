@@ -1,40 +1,41 @@
-### esp dht_pub ###
+### esp led_dht ###
 ## main.py
-## gea20180327
+## gea20180407
+
+## history
+# 20180407 no_debug() moved to boot.py
 
 ### local & user parameters ###
 LOGFILE = "esperr.log"      # error log file
 #sleeptime=1                # in minutes
 ###
 
-no_debug()
+#no_debug()
 
 from time import sleep
 from time import sleep_ms
 
 
 ### LED ###
-#from machine import Pin
-#LED2 = Pin(2, Pin.OUT)
+from machine import Pin
+LED2 = Pin(2, Pin.OUT)
 
 ### connect ###
-#LED2.value(1)
+LED2.value(1)
 connect()
-#LED2.value(0)
+LED2.value(0)
 
 ### testing a 1s sleep after connect() to prevent further errors ###
 sleep(1)
 ###
 
-### set RTC ###
+### set RTC if not initialised ###
 from setrtc import setrtc
 from machine import RTC
 rtc=RTC()
 t=rtc.datetime()
 y=t[0]
-#m=t[5]
 if y==2000:
-#if y==2000 or m<sleeptime:
     setrtc()
 
 ### done in dht script ###
