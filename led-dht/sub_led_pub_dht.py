@@ -3,15 +3,15 @@
 # topics esp32/led esp32/temp_humidity esp32/sta
 # do process msg on/off/toggle
 
-# history:
+## history:
 # example_sub_led.py adapted for ESP32; uses xor for toggle
 # replaced wait_msg() by check_msg()
 # added sleep() -- try 1s .. 10s
 # factored out 'led.value(ledstate)'
 # modifed printed info
-# clarify 'global ledstate' (needed for xor function)
-# auto starting main() does not work
-# measuring sleep consumption
+# declaring 'global ledstate' seems needed for xor function
+# auto starting main() does not work; simply calling main() is ok
+# measuring sleep consumption 130 mA
 # adding code for publishing dht
 # replaced 'c' by 'client'
 # add print_pub_status()
@@ -19,8 +19,8 @@
 # 20180405 problem?? free GC is lowering by 256 at each pass
 # 20180407 with deepsleep:
 #   * MQTT raises sometimes (often) an OSError 118 and stops with "no AP found" message
-#   * no message are found by check.msg(), even when called twice
-
+#   * no message are found by check.msg(), even when called twice; ok with wait_msg()
+# 20180407 added mqtt_connect() to catch OSError 118; observing up to 4 retries
 
 ### user definitions ###
 # Default MQTT server to connect to
@@ -89,6 +89,18 @@ def sub_cb(topic, msg):
     print(">> setting led ledstate {}".format(ledstate))
     led.value(ledstate)
 
+### mqtt connect with retry ###
+def mqtt_connect():
+    CONNNECT=0
+    while CONNNECT == 0:
+        try:
+            print("connecting as MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
+            client.connect()
+            CONNNECT=1
+            print("connected as MQTT client")
+        except OSError:
+            print("retrying connect")
+
 
 ### publish dht ###
 def publish_dht():
@@ -134,8 +146,9 @@ def main(server=SERVER):
     #client = MQTTClient(CLIENT_ID, server)
     # Subscribed messages will be delivered to this callback
     client.set_callback(sub_cb)
-    print("connecting MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
-    client.connect()
+    #print("connecting MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
+    #client.connect()
+    mqtt_connect()
     print("subcribing to topic")
     client.subscribe(TOPIC)
     print_pub_status("Connected to {}, subscribed to {} topic".format(server, TOPIC))
@@ -145,19 +158,20 @@ def main(server=SERVER):
         while 1:
             micropython.mem_info()
             # 1a. check message -> led on/off/toggle
-            client.check_msg()
+            print("waiting message")
+            client.wait_msg()
             # 1b. publish led status
             print_pub_status("led state is {}".format(ledstate))
             # 2. publish dht
             publish_dht()
-            client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg() 
-            print_pub_status("led state is {}".format(ledstate))
+            #client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg() 
+            #print_pub_status("led state is {}".format(ledstate))
             # sleep
             print_pub_status('going to sleep')
             sleep(5)
             print_pub_status('waking from sleep')
             print('going to deepsleep')
-            deepsleep(5000)
+            deepsleep(10000)
     finally:
         client.disconnect()
 
