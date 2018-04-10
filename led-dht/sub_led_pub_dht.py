@@ -21,6 +21,9 @@
 #   * MQTT raises sometimes (often) an OSError 118 and stops with "no AP found" message
 #   * no message are found by check.msg(), even when called twice; ok with wait_msg()
 # 20180407 added mqtt_connect() to catch OSError 118; observing up to 4 retries
+# 20180410 publish 'connected' message
+# 20180410 mqtt_connect(): with a 100ms sleep, # retries is down to 1  
+# 20180410 check_msg() does not work more by placing it after publish
 
 ### user definitions ###
 # Default MQTT server to connect to
@@ -35,6 +38,7 @@ QOSSTA = 0
 
 ### sleep deepsleep ###
 from time import sleep
+from time import sleep_ms
 from machine import deepsleep
 
 ### CLIENT_ID ###
@@ -91,16 +95,17 @@ def sub_cb(topic, msg):
 
 ### mqtt connect with retry ###
 def mqtt_connect():
-    CONNNECT=0
-    while CONNNECT == 0:
+    CONNECT=1
+    print("connecting as MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
+    while CONNECT != 0:
         try:
-            print("connecting as MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
             client.connect()
-            CONNNECT=1
-            print("connected as MQTT client")
+            CONNECT=0
+            print_pub_status("connected as MQTT client")
         except OSError:
-            print("retrying connect")
-
+            print("retrying connect {}".format(CONNECT))
+            CONNECT=CONNECT+1
+            sleep_ms(100)
 
 ### publish dht ###
 def publish_dht():
@@ -157,21 +162,20 @@ def main(server=SERVER):
         # this is the main loop #
         while 1:
             micropython.mem_info()
-            # 1a. check message -> led on/off/toggle
-            print("waiting message")
-            client.wait_msg()
-            # 1b. publish led status
+            # 1. publish led status
             print_pub_status("led state is {}".format(ledstate))
             # 2. publish dht
             publish_dht()
-            #client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg() 
-            #print_pub_status("led state is {}".format(ledstate))
-            # sleep
+            # 3. check message -> led on/off/toggle
+            #print("waiting message")
+            #client.wait_msg()
+            print_pub_status('checking message')
+            client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg()
             print_pub_status('going to sleep')
             sleep(5)
             print_pub_status('waking from sleep')
             print('going to deepsleep')
-            deepsleep(10000)
+            deepsleep(5000)
     finally:
         client.disconnect()
 
