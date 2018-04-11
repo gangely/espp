@@ -1,5 +1,8 @@
 # espp
-ESP32 development in MicroPython
+
+using ESP32 with MicroPython
+
+TODO: start wiki
 
 interfacing sensors:
 * DHT22
@@ -28,3 +31,6 @@ subfolders:
 
 ## led-dht
 * subscribe LED2, publish DHT
+
+## led-dht-ds
+* same with deepsleep
