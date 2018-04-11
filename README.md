@@ -2,7 +2,7 @@
 
 using ESP32 with MicroPython
 
-TODO: start wiki
+started the wiki: will move more info there as soon I can decide which format to use
 
 interfacing sensors:
 * DHT22
