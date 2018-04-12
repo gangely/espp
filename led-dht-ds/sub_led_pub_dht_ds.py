@@ -30,6 +30,11 @@
 #   * station.disconnect() seems to have no effect: station.isconnected() reports True ??
 # 20180411 reuse mqttconnect() from sub_led_deepsleep.py (with limited count)
 # 20180411 more test with check.msg() in a counted loop: messages sent before the loop are not catched
+# 20180412 use wait(testpoint) to determine when a message is accepted
+#   * messages from a topic are accepted right after the subscription
+#   * messages can be queued
+#   * messages will be processed by subsequent wait_msg or check_msg
+#   * non processed messages are lost by deepsleep
 
 ### user definitions ###
 # Default MQTT server to connect to
@@ -94,7 +99,6 @@ def print_pub_status(statusmsg):
 ### message callback to set led state ###
 ledstate = 0
 def sub_cb(topic, msg):
-    #ledstate = 0
     global ledstate
     print(("message received: topic {}, message {} ".format(topic, msg)), end='')
     if msg == b"on":
@@ -106,6 +110,7 @@ def sub_cb(topic, msg):
         ledstate = ledstate ^ 1   # use bitwise XOR
     print(">> setting led ledstate {}".format(ledstate))
     led.value(ledstate)
+
 
 ### mqtt connect with retry ###
 '''
@@ -123,7 +128,7 @@ def mqtt_connect():
             sleep_ms(100)
 '''
 
-def mqttconnect():
+def mqtt_connect():
     global mqttretry
     retry=0
     print("connecting as MQTT client")
@@ -194,6 +199,13 @@ def publish_dht():
             #client.publish(TOPICSTA, err2, qos=QOSSTA)
 
 
+### waiting for test ###
+def wait(testpoint):
+    print('waiting 10s after {}...'.format(testpoint), end='')
+    sleep(10)
+    print('done')
+
+
 ################
 ##### main #####
 ################
@@ -201,43 +213,45 @@ def publish_dht():
 
 def main(server=SERVER):
     print('station connected:', station.isconnected())
+    wait('station connected')
     #client = MQTTClient(CLIENT_ID, server)
     # Subscribed messages will be delivered to this callback
     client.set_callback(sub_cb)
     #print("connecting MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
     #client.connect()
-    mqttconnect()
+    mqtt_connect()
+    wait('mqtt connected')
     print("subcribing to topic")
     client.subscribe(TOPIC)
     print_pub_status("Connected to {}, subscribed to {} topic".format(server, TOPIC))
-
+    wait('subscribed to topic') 
     try:
         # this is the main loop #
         while 1:
             micropython.mem_info()
-            # 1. publish led status
-            print_pub_status("led state is {}".format(ledstate))
-            # 2. publish dht
+            # 1. publish dht
             publish_dht()
-            # 3. check message -> led on/off/toggle
+            # 2. check message -> led on/off/toggle
             #print("waiting message")
             #client.wait_msg()
             print_pub_status('checking message')
-            count = 0
-            while count < 10:
-                client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg()
-                print('.', end='')
-                sleep(1)
-                count=count+1
-            print_pub_status('going to sleep')
-            sleep(5)                    # a little time to check the led #
-            print_pub_status('waking from sleep')
-            print('disconnecting')
+            #count = 0
+            #while count < 15:
+            client.check_msg()          ### 20180407 with deepsleep, no message are found by check.msg()
+            #    print('.', end='')
+            #    sleep(1)
+            #    count=count+1
+            #print('\r')
+            # 3. publish led status
+            print_pub_status("led state is {}".format(ledstate))
+            wait('last led change')
+            print_pub_status('disconnecting client')
             client.disconnect()
             sleep(1)
             #while station.isconnected() == True:
-            #station.disconnect()
-            #sleep(1)
+            print('disconnection station...', end='')
+            station.disconnect()
+            sleep(1)
             print('station connected:', station.isconnected())
             print('going to deepsleep')
             deepsleep(10000)
