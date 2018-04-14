@@ -7,6 +7,8 @@ history:
 
 ## problem with deepsleep
 
+new version on https://github.com/gangely/espp/wiki/DeepSleep
+
 ### difficulties with re-connection for mqtt client connect
 * first workaround: reused mqttconnect() from sub_led_deepsleep.py, with a limited count of retries
 * add client.disconnect() before deepsleep() => no more 'retry to connect'
