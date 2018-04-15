@@ -1,1 +1,1 @@
-../dht_pub/dht_print.py
+../dht-pub/dht_print.py
