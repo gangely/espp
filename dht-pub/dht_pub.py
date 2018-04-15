@@ -1,6 +1,9 @@
-### esp dht_pub ###
-## dht_pub.py
-## gea20180327
+### dht_pub.py ###
+## version gea20180327
+
+## history:
+# ..
+# 20180415 added client.disconnect() before going to deepsleep
 
 ### local & user parameters ### 
 SERVER = '192.168.0.10'     # MQTT Server Address (Change to the IP address of your broker)
@@ -53,13 +56,34 @@ rtc=RTC()
 from umqtt.robust import MQTTClient
 #SERVER = '192.168.0.10'  # MQTT Server Address (Change to the IP address of your Pi)
 CLIENT_ID = 'ESP32_DHT22_Sensor'
-TOPICDHT = b'ESP32/temp_humidity'
-TOPICBAT = b'ESP32/battery'
-TOPICSTA = b'ESP32/status'
-QOSDHT = 1
-QOSBAT = 1
+TOPICDHT = b'esp32/temp_humidity'
+TOPICBAT = b'esp32/battery'
+TOPICSTA = b'esp32/status'
+QOSDHT = 0
+QOSBAT = 0
 QOSSTA = 1
 client = MQTTClient(CLIENT_ID, SERVER)
+
+###################
+##### methods #####
+###################
+
+
+### print/publish status message ###
+def print_pub_status(statusmsg):
+    t=rtc.datetime()
+    status = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} {}".format(t[0], t[1], t[2], t[4], t[5], t[6], statusmsg))
+    print(status)
+    LED2.value(1)
+    client.publish(TOPICSTA, status, qos=QOSSTA)
+    LED2.value(0)
+
+
+##################
+##### progam #####
+##################
+
+
 LED2.value(1)
 retry = 0
 while retry < mqttretry:
@@ -83,7 +107,7 @@ while retry < mqttretry:
         f = open(LOGFILE, 'a')
         f.write('%s\n' %(err))
         f.close()
-        deepsleep(1000)
+        deepsleep(100)
 LED2.value(0)
 
 ### status MQTT msg ###
@@ -134,6 +158,8 @@ while True:
             #f.close()
             #sleep(1)
             LED2.value(0)
+            client.disconnect()
+            sleep_ms(10)
             deepsleep(SLEEPDELAY)
         else:
             err1 = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} Invalid sensor readings".format(t[0], t[1], t[2], t[4], t[5], t[6]))
