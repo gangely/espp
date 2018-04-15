@@ -2,26 +2,8 @@
 
 using ESP32 with MicroPython
 
-started the wiki: will move more info there as soon I can decide which format to use
-
-interfacing sensors:
-* DHT22
-* ADC: reading 5VDC or battery
-
-interfacing peripherals:
-* LED2
-
-using MQTT:
-* publish the DHT22 measures
-* subscribe LED2
-
-topics used:
-* esp32/bat
-* esp32/dht
-* esp32/led
-* esp32/status
-
-subfolders:
+* please find here down a brief description of the subfolders
+* see more notes on the [wiki pages](https://github.com/gangely/espp/wiki/) 
 
 ## dht
 * publish DHT
