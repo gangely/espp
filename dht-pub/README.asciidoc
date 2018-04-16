@@ -61,7 +61,7 @@ copy the files:
 * `sta_print.py`
 
 #### parameter to edit
-* in each of the scripts, edit BROKER; address format can be <hostname> or <111.222.333.444>
+* in each of the scripts, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
 
 ## scripts usage
 
