@@ -2,16 +2,19 @@
 
 * this set of scripts will publish DHT22 temperature and humidity measurements on subscribed MQTT clients, as long as battery or 5VDC measurement and status messages
 * this page describes a short HOWTO to set up the scripts
-* more notes can be found on the Wiki
+* more notes can be found on the Wiki -- TODO: wiki page for HW set up (DHT and ADC)
 
-## installation 
+## software installation 
 
 ### on the ESP32
 
 #### mqtt module
+install the MicroPython MQTT libraries: TODO: wiki page
 
-* install the MicroPython MQTT libraries `mqtt.simple` and `mqtt.robust`; TODO: add notes
-* note: `dht_pub.py` is written with ref to `mqtt.robust`, but `mqtt.simple` is ok
+* `mqtt.simple`
+* `mqtt.robust`
+
+note: `dht_pub.py` is written with import from `mqtt.robust`, but `mqtt.simple` is ok
 
 #### uPython scripts 
 copy the files:
@@ -36,13 +39,13 @@ MYAPPASS = "<your AP password>"
 ### on the broker
 
 #### Mosquitto
-* install and start `mosquitto`; TODO: add notes
+* install and start `mosquitto`; TODO: wiki page
 
 ### on the client machine
 
 #### Python and Paho MQTT
 * install python (tested with Python3)
-* install Paho MQTT client; TODO: add notes
+* install Paho MQTT client; TODO: wiki page
 
 #### Python scripts
 copy the files:
@@ -54,7 +57,7 @@ copy the files:
 #### parameter to edit
 * in each of the scripts, edit BROKER; address format can be <hostname> or <111.222.333.444>
 
-## usage
+## scripts usage
 
 ### on the ESP32
 
@@ -62,7 +65,7 @@ copy the files:
 
 ### on the client machine
 
-* open up to 3 terminals; in each: +
+* open up to 3 terminals, one for each topic, and launch the requested MQTT client: +
 ----
 python
 
