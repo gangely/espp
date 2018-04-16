@@ -59,10 +59,13 @@ in REPL: `import dht_pub`
 
 ### on the client machine
 
-open up to 3 terminals; in each:
-
+* open up to 3 terminals; in each:
 ----
 python
 
 >>> import dht_print # or bat_print or sta_print
 ----
+* example: REPL in upper half; 3 MQTT clients in lower half
+
+image:Screenshot_20180320_201506.png[]
+
