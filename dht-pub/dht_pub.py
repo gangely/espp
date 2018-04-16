@@ -3,11 +3,13 @@
 
 ## history:
 # ..
-# 20180415 added client.disconnect() before going to deepsleep
+# 20180415 added 'client.disconnect()' before going to deepsleep
+# 20180416 added 'print_pub_status()' method
+# 20180416 TOPICDHT changed to esp32/dht22 
 
 ### local & user parameters ### 
 SERVER = '192.168.0.10'     # MQTT Server Address (Change to the IP address of your broker)
-sleeptime = 4               # in minutes  
+sleeptime = 5               # in minutes  
 LOGFILE = "esperr.log"      # error log file
 mqttretry = 3
 ###
@@ -56,7 +58,7 @@ rtc=RTC()
 from umqtt.robust import MQTTClient
 #SERVER = '192.168.0.10'  # MQTT Server Address (Change to the IP address of your Pi)
 CLIENT_ID = 'ESP32_DHT22_Sensor'
-TOPICDHT = b'esp32/temp_humidity'
+TOPICDHT = b'esp32/dht22'
 TOPICBAT = b'esp32/battery'
 TOPICSTA = b'esp32/status'
 QOSDHT = 0
@@ -83,7 +85,7 @@ def print_pub_status(statusmsg):
 ##### progam #####
 ##################
 
-
+### connect to MQTT socket ###
 LED2.value(1)
 retry = 0
 while retry < mqttretry:
@@ -111,24 +113,31 @@ while retry < mqttretry:
 LED2.value(0)
 
 ### status MQTT msg ###
+'''
 LED2.value(1)
 t=rtc.datetime()
 sta = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} connected to MQTT socket".format(t[0], t[1], t[2], t[4], t[5], t[6]))
 print(sta)
 client.publish(TOPICSTA, sta, qos=QOSSTA)
 LED2.value(0)
+'''
+print_pub_status("connected to MQTT socket")
 
-### reload rtc time ###
+### reload rtc time each hour ###
 from setrtc import setrtc
+t=rtc.datetime()
 m=t[5]
 if m<sleeptime: # will reload once each hour #
     setrtc()
+    '''
     t=rtc.datetime()
     tim = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} reloaded RTC time from NTP".format(t[0], t[1], t[2], t[4], t[5], t[6]))
     print(tim)
     LED2.value(1)
     client.publish(TOPICSTA, tim, qos=QOSSTA)
     LED2.value(0)
+    '''
+    print_pub_status("reloaded RTC time from NTP")
 
 ### battery measurement ###
 z=rtc.datetime()
@@ -146,6 +155,8 @@ while True:
         z=rtc.datetime()
         # dht measurement
         sensor.measure()   # Poll sensor
+        #sleep_ms(1)
+        #sensor.measure()
         t = sensor.temperature()
         h = sensor.humidity()
         if isinstance(t, float) and isinstance(h, float):  # Confirm sensor results are numeric
@@ -158,15 +169,22 @@ while True:
             #f.close()
             #sleep(1)
             LED2.value(0)
+            print_pub_status("disconnecting MQTT client")
             client.disconnect()
             sleep_ms(10)
             deepsleep(SLEEPDELAY)
         else:
+            '''
             err1 = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} Invalid sensor readings".format(t[0], t[1], t[2], t[4], t[5], t[6]))
             print(err1)
             client.publish(TOPICSTA, err1, qos=QOSSTA)
+            '''
+            print_pub_status("Invalid sensor readings")
     except OSError:
+        '''
         err2 = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} Failed to read sensor".format(t[0], t[1], t[2], t[4], t[5], t[6]))
         print(err2)
         client.publish(TOPICSTA, err2, qos=QOSSTA)
+        '''
+        print_pub_status("Failed to read sensor")
     #sleep(1)
