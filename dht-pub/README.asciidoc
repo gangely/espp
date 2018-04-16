@@ -52,27 +52,22 @@ copy the files:
 * `sta_print.py`
 
 #### parameter to edit
-in each of the scripts, edit the *broker address* (near the end of the scripts):
-
-----
-client.connect('<hostname or 111.222.333.444>', 1883, 60)  # Connect to MQTT broker
-----
+* in each of the scripts, edit BROKER; address format can be <hostname> or <111.222.333.444>
 
 ## usage
 
 ### on the ESP32
 
-in REPL: `import dht_pub`
+* in REPL: `import dht_pub`
 
 ### on the client machine
 
-* open up to 3 terminals; in each:
+* open up to 3 terminals; in each: +
 ----
 python
 
 >>> import dht_print # or bat_print or sta_print
 ----
-* example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half
-
+* example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half +
 image:Screenshot_20180320_201506.png[]
 
