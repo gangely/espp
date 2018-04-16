@@ -3,17 +3,17 @@
 using ESP32 with MicroPython
 
 * please find here down a brief description of the subfolders
-* see more notes on the [wiki pages](https://github.com/gangely/espp/wiki/) 
+* see more notes in the subfolders README and the [wiki pages](https://github.com/gangely/espp/wiki/) 
 
 ## boot
-* boot.py with definition of `connect()`, to be called in main.py
+* boot.py  (definition of `connect()`)
 
 ## common
 * setrtc.py
 
 ## dht-pub
-* publish DHT22
-* working with deepsleep
+* publish DHT22, battery, status
+* works with deepsleep
 
 ## led
 * subscribe LED2
