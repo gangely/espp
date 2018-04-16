@@ -5,13 +5,13 @@ using ESP32 with MicroPython
 * please find here down a brief description of the subfolders
 * see more notes in the subfolders README and the [wiki pages](https://github.com/gangely/espp/wiki/) 
 
-## boot
+## [boot](boot)
 * boot.py  (definition of `connect()`)
 
-## common
+## [common](common)
 * setrtc.py
 
-## dht-pub
+## [dht-pub](dht-pub)
 * publish DHT22, battery, status
 * works with deepsleep
 
@@ -21,5 +21,5 @@ using ESP32 with MicroPython
 ## led-dht
 * subscribe LED2, publish DHT22
 
-## led-dht-ds
+## [led-dht-ds](led-dht-ds)
 * same with deepsleep
