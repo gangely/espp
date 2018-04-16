@@ -6,7 +6,7 @@
 ** link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
 ** MicroPython MQTT libraries
 ** Mosquitto
-** Paho MQTT Python
+** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
 
 ## software installation 
 
@@ -48,8 +48,8 @@ MYAPPASS = "<your AP password>"
 ### on the client machine
 
 #### Python and Paho MQTT
-* install python (tested with Python3)
-* install Paho MQTT client; TODO: wiki page
+* have Python 2.7.9 or Python 3 installed
+* link:https://github.com/gangely/espp/wiki/Paho-MQTT[install Paho MQTT client]
 
 #### Python scripts
 copy the files:
