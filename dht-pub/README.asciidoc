@@ -1,0 +1,68 @@
+# Publish DHT
+
+* this set of scripts will publish DHT22 temperature and humidity measurements on subscribed MQTT clients, as long as battery or 5VDC measurement and status messages
+* this page describes a short HOWTO to set up the scripts
+* more notes can be found on the Wiki
+
+## installation 
+
+### on the ESP32
+
+#### mqtt module
+
+* install the MicroPython MQTT libraries `mqtt.simple` and `mqtt.robust`; TODO: add notes
+* note: `dht_pub.py` is written with ref to `mqtt.robust`, but `mqtt.simple` is ok
+
+#### uPython scripts 
+copy the files:
+
+* `boot.py`
+* `main.py`
+* `setrtc.py`
+* `dht_pub.py`
+
+also add `mycredentials.py` with following content:
+
+----
+MYAPSSID = "your AP SSID"
+MYAPPASS = "your AP password"
+----
+
+#### variables/constants to edit
+
+* `boot.py`: `STAADDR` `STAMASK` `STAGW` `STADNS`
+* `dht_pub.py`: `SERVER`
+
+### on the broker
+
+#### Mosquitto
+* install and start `mosquitto`; TODO: add notes
+
+### on the client machine
+
+#### Python and Paho MQTT
+* install python (tested with Python3)
+* install Paho MQTT client with broker address; TODO: add notes
+
+#### Python scripts
+copy the files:
+
+* `bat_print.py`
+* `dht_print.py`
+* `sta_print.py`
+
+## usage
+
+### on the ESP32
+
+in REPL: `import dht_pub`
+
+### on the client machine
+
+open up to 3 terminals; in each:
+
+----
+python
+
+>>> import dht_print # or bat_print or sta_print
+----
