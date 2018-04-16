@@ -1,7 +1,9 @@
 # Publish DHT
+:TOC:
 
+## info
 * this set of scripts will publish DHT22 temperature and humidity measurements to subscribed MQTT clients, as long as battery or 5VDC measurement, and status messages
-* this page describes a short HOWTO to set up the scripts
+* this page describes a short HOWTO to set up and run the scripts
 * more notes can be found on the Wiki:
 ** link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
 ** MicroPython MQTT libraries
@@ -48,7 +50,7 @@ MYAPPASS = "<your AP password>"
 ### on the client machine
 
 #### Python and Paho MQTT
-* have Python 2.7.9 or Python 3 installed
+* prerequisite: have Python 2.7.9+ or Python 3.4+ installed
 * link:https://github.com/gangely/espp/wiki/Paho-MQTT[install Paho MQTT client]
 
 #### Python scripts
