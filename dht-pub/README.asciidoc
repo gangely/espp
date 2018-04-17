@@ -25,21 +25,16 @@ note: `dht_pub.py` is written with import from `mqtt.robust`, but `mqtt.simple` 
 #### uPython scripts 
 copy the files:
 
-* `boot.py`
+* `../boot/boot.py`
+* `../boot/mycredentials.py`
+* `../common/setrtc.py`
 * `main.py`
-* `setrtc.py`
 * `dht_pub.py`
-
-also add `mycredentials.py` with following content:
-
-----
-MYAPSSID = "<your AP SSID>"
-MYAPPASS = "<your AP password>"
-----
 
 #### parameters to edit
 
 * `boot.py`: `STAADDR` `STAMASK` `STAGW` `STADNS`
+* `mycredentials.py`: `MYAPSSID` `MYAPPASS`
 * `dht_pub.py`: `SERVER`
 
 ### on the broker
@@ -68,6 +63,7 @@ copy the files:
 ### on the ESP32
 
 * in REPL: `import dht_pub`
+* to change the deepsleep length, adjust `sleeptime`; the value is in _minutes_
 
 ### on the client machine
 
