@@ -2,24 +2,24 @@
 
 using ESP32 with MicroPython
 
-* please find here under a brief description of the subfolders
-* see more notes in the subfolders README and the [wiki pages](https://github.com/gangely/espp/wiki/) 
+* please find on this page a brief description of the subfolders
+* see more notes in each of the subfolders README and in the [wiki pages](https://github.com/gangely/espp/wiki/) 
 
 ## [boot](boot)
-* boot.py  (definition of `connect()`)
+* boot.py  (definition of `connect()`, used in all subprojects)
 
 ## [common](common)
-* setrtc.py
+* setrtc.py, used in all subprojects
 
 ## [dht-pub](dht-pub)
-* publish DHT22, battery, status
+* subproject: publishing DHT22, battery, status
 * works with deepsleep
 
 ## led
-* subscribe LED2
+* subproject: subscribe LED2
 
 ## led-dht
-* subscribe LED2, publish DHT22
+* subproject: subscribe LED2, publish DHT22
 
 ## [led-dht-ds](led-dht-ds)
-* same with deepsleep
+* subproject: same with deepsleep
