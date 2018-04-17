@@ -5,7 +5,8 @@
 # ..
 # 20180415 added 'client.disconnect()' before going to deepsleep
 # 20180416 added 'print_pub_status()' method
-# 20180416 TOPICDHT changed to esp32/dht22 
+# 20180416 TOPICDHT changed to esp32/dht22
+# 20180417 added station.disconnect() in hope to help reconnection
 
 ### local & user parameters ### 
 SERVER = '192.168.0.10'     # MQTT Server Address (Change to the IP address of your broker)
@@ -21,12 +22,19 @@ from time import sleep_ms
 from machine import deepsleep
 SLEEPDELAY = sleeptime * 60000 - 3000     # in milliseconds
 
+### network ###
+from network import WLAN
+from network import STA_IF
+station = WLAN(STA_IF)
+
 ### DHT22 ###
 from dht import DHT22
 sensor = DHT22(Pin(15, Pin.IN, Pin.PULL_UP))
 
 ### LED ###
-LED2 = Pin(2, Pin.OUT)
+#from machine import Pin
+# ESP32 modules have blue, active-high LED on GPIO2
+LED2 = Pin(2, Pin.OUT, value=0)
 
 ### ADC ###
 from machine import ADC
@@ -109,6 +117,11 @@ while retry < mqttretry:
         f = open(LOGFILE, 'a')
         f.write('%s\n' %(err))
         f.close()
+        print('disconnection station...', end='')
+        station.disconnect()
+        sleep_ms(10)
+        print('station connected:', station.isconnected())
+        print('going to deepsleep')
         deepsleep(100)
 LED2.value(0)
 
@@ -172,6 +185,11 @@ while True:
             print_pub_status("disconnecting MQTT client")
             client.disconnect()
             sleep_ms(10)
+            print('disconnection station...', end='')
+            station.disconnect()
+            sleep_ms(10)
+            print('station connected:', station.isconnected())
+            print('going to deepsleep')
             deepsleep(SLEEPDELAY)
         else:
             '''
