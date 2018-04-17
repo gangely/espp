@@ -1,0 +1,11 @@
+# espp - led-dht-ds
+
+history:
+
+* 20180411 created a distinct script for deepsleep testing
+* 20180411 more test with deepsleep; client.disconnect() solves the client.connect() problem; working on check_msg()
+* 20180412 determined when a message is accepted
+
+## problem with deepsleep
+
+notes moved on wiki page https://github.com/gangely/espp/wiki/DeepSleep
