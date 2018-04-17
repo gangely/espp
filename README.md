@@ -2,7 +2,7 @@
 
 using ESP32 with MicroPython
 
-* please find here down a brief description of the subfolders
+* please find here under a brief description of the subfolders
 * see more notes in the subfolders README and the [wiki pages](https://github.com/gangely/espp/wiki/) 
 
 ## [boot](boot)
