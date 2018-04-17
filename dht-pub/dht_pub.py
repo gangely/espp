@@ -1,18 +1,19 @@
 ### dht_pub.py ###
-## version gea20180327
+## version gea20180417
 
 ## history:
 # ..
 # 20180415 added 'client.disconnect()' before going to deepsleep
 # 20180416 added 'print_pub_status()' method
-# 20180416 TOPICDHT changed to esp32/dht22
+#          TOPICDHT changed to esp32/dht22
 # 20180417 added station.disconnect() in hope to help reconnection
+#          renamed: BROKER SLEEPTIME MQTTRETRY
 
 ### local & user parameters ### 
-SERVER = '192.168.0.10'     # MQTT Server Address (Change to the IP address of your broker)
-sleeptime = 5               # in minutes  
+BROKER = '192.168.0.10'     # MQTT Server Address (Change to the IP address of your broker)
+SLEEPTIME = 5               # deepsleep time, in minutes  
 LOGFILE = "esperr.log"      # error log file
-mqttretry = 3
+MQTTRETRY = 3               # # of retries before rebooting
 ###
 
 ### misc ###
@@ -20,7 +21,7 @@ from machine import Pin
 from time import sleep
 from time import sleep_ms
 from machine import deepsleep
-SLEEPDELAY = sleeptime * 60000 - 3000     # in milliseconds
+SLEEPDELAY = SLEEPTIME * 60000 - 3000     # in milliseconds; edit SLEEPTIME to modify
 
 ### network ###
 from network import WLAN
@@ -64,7 +65,7 @@ rtc=RTC()
 
 ### MQTT ###
 from umqtt.robust import MQTTClient
-#SERVER = '192.168.0.10'  # MQTT Server Address (Change to the IP address of your Pi)
+#BROKER = '192.168.0.10'  # MQTT Server Address (Change to the IP address of your Pi)
 CLIENT_ID = 'ESP32_DHT22_Sensor'
 TOPICDHT = b'esp32/dht22'
 TOPICBAT = b'esp32/battery'
@@ -72,7 +73,8 @@ TOPICSTA = b'esp32/status'
 QOSDHT = 0
 QOSBAT = 0
 QOSSTA = 1
-client = MQTTClient(CLIENT_ID, SERVER)
+client = MQTTClient(CLIENT_ID, BROKER)
+
 
 ###################
 ##### methods #####
@@ -96,7 +98,7 @@ def print_pub_status(statusmsg):
 ### connect to MQTT socket ###
 LED2.value(1)
 retry = 0
-while retry < mqttretry:
+while retry < MQTTRETRY:
     try:
         client.connect()   # Connect to MQTT broker
         break
@@ -110,7 +112,7 @@ while retry < mqttretry:
         f.close()
         #print(".", end = "")
         sleep_ms(500)
-    if retry==mqttretry:
+    if retry==MQTTRETRY:
         LED2.value(0)
         err = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} failed MQTT connect, will reboot".format(t[0], t[1], t[2], t[4], t[5], t[6]))
         print(err)
@@ -140,7 +142,7 @@ print_pub_status("connected to MQTT socket")
 from setrtc import setrtc
 t=rtc.datetime()
 m=t[5]
-if m<sleeptime: # will reload once each hour #
+if m<SLEEPTIME: # will reload once each hour #
     setrtc()
     '''
     t=rtc.datetime()
@@ -161,7 +163,7 @@ LED2.value(1)
 client.publish(TOPICBAT, msgbat, qos=QOSBAT)
 LED2.value(0)
 
-### Main loop ###
+### loop: dht measurements and deepsleep ###
 while True:
 #for i in range(10):
     try:

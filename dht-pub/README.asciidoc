@@ -35,7 +35,7 @@ copy the files:
 
 * `boot.py`: `STAADDR` `STAMASK` `STAGW` `STADNS`
 * `mycredentials.py`: `MYAPSSID` `MYAPPASS`
-* `dht_pub.py`: `SERVER`
+* `dht_pub.py`: `BROKER`
 
 ### on the broker
 
@@ -63,7 +63,7 @@ copy the files:
 ### on the ESP32
 
 * in REPL: `import dht_pub`
-* to change the deepsleep length, adjust `sleeptime`; the value is in _minutes_
+* to change the deepsleep length, adjust `SLEEPTIME`; the value is in _minutes_
 
 ### on the client machine
 
