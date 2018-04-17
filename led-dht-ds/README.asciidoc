@@ -8,4 +8,4 @@ history:
 
 ## problem with deepsleep
 
-notes moved on wiki page https://github.com/gangely/espp/wiki/DeepSleep
+notes moved on wiki page link:https://github.com/gangely/espp/wiki/DeepSleep[DeepSleep]
