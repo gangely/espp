@@ -41,13 +41,13 @@ copy the files:
 ### on the broker
 
 #### Mosquitto
-* link:https://github.com/gangely/espp/wiki/Mosquitto[install and start Mosquitto]
+* follow the wiki page: link:https://github.com/gangely/espp/wiki/Mosquitto[install and start Mosquitto]
 
 ### on the client machine
 
 #### Python and Paho MQTT
 * prerequisite: have Python 2.7.9+ or Python 3.4+ installed
-* link:https://github.com/gangely/espp/wiki/Paho-MQTT[install Paho MQTT client]
+* follow the wiki page: link:https://github.com/gangely/espp/wiki/Paho-MQTT[install Paho MQTT client]
 
 #### Python scripts
 copy the files:
