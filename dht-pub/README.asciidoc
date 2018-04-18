@@ -8,7 +8,7 @@
 * more notes can be found on the Wiki:
 ** link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
 ** MicroPython MQTT libraries
-** Mosquitto
+** link:https://github.com/gangely/espp/wiki/Mosquitto[Mosquitto]
 ** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
 
 ## software installation 
@@ -41,7 +41,7 @@ copy the files:
 ### on the broker
 
 #### Mosquitto
-* install and start `mosquitto`; TODO: wiki page
+* link:https://github.com/gangely/espp/wiki/Mosquitto[install and start Mosquitto]
 
 ### on the client machine
 
