@@ -7,16 +7,17 @@
 * this page describes a short HOWTO to set up and run the scripts
 * more notes can be found on the Wiki:
 ** link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
-** MicroPython MQTT libraries
+** link:https://github.com/gangely/espp/wiki/MicroPython-uMQTT[MicroPython MQTT libraries]
 ** link:https://github.com/gangely/espp/wiki/Mosquitto[Mosquitto]
 ** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
 
 ## software installation 
 
 ### on the ESP32
+prerequisite: have MicroPython installed and accessed through REPL
 
-#### mqtt module
-install the MicroPython MQTT libraries: TODO: wiki page
+#### MQTT libraries
+see the wiki page: link:https://github.com/gangely/espp/wiki/MicroPython-uMQTT[install the MicroPython MQTT libraries]
 
 * `mqtt.simple`
 * `mqtt.robust`
