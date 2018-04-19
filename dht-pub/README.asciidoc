@@ -12,7 +12,7 @@
 ** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
 
 ## software installation 
-NOTE: 20180419 notes common to all subprojects will be moved to link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation] page
+NOTE: 20180419 notes common to other subprojects have been copied to link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation] page
 
 ### on the ESP32
 prerequisite: have MicroPython installed and accessed through REPL
