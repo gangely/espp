@@ -1,9 +1,10 @@
-### sta_print.py ###
+### topic_print.py ###
+## gea20180418 ##
 
-#BROKER='hc1'
-TOPIC='esp32/status'
-
-from topic_print import BROKER
+BROKER='hc1'                #address format can be <hostname> or <111.222.333.444>
+#TOPIC='esp32/dht22'
+'''
+TOPIC='#'
 
 import paho.mqtt.client as mqtt
 
@@ -26,11 +27,12 @@ def on_message(client, userdata, msg):
     #with open('espbat.log', 'a') as f:
     #    f.write('%s\n' %(message))
 
-client = mqtt.Client()
-client.on_connect = on_connect  # Specify on_connect callback
-client.on_message = on_message  # Specify on_message callback
-client.connect(BROKER, 1883, 60)  # Connect to MQTT broker (also running on Pi).
-
-# Processes MQTT network traffic, callbacks and reconnections. (Blocking)
-client.loop_forever()
-
+def print_topic(topic):
+    global TOPIC = topic
+    client = mqtt.Client()
+    client.on_connect = on_connect  # Specify on_connect callback
+    client.on_message = on_message  # Specify on_message callback
+    client.connect(BROKER, 1883, 60)  # Connect to MQTT broker (also running on Pi).
+    # Processes MQTT network traffic, callbacks and reconnections. (Blocking)
+    client.loop_forever()
+'''

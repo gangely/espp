@@ -1,4 +1,12 @@
+### bat_log.py ###
+
+#BROKER='hc1'
+TOPIC='esp32/battery'
+
+from topic_print import BROKER
+
 import paho.mqtt.client as mqtt
+
 """
 import Adafruit_SSD1306
 from PIL import Image, ImageDraw, ImageFont
@@ -26,10 +34,11 @@ def display_data(t, h):
 """
     # Callback fires when conected to MQTT broker.
 def on_connect(client, userdata, flags, rc):
-    print('Connected with result code {0}'.format(rc))
+    print('Connected to', BROKER, 'with result code {0}'.format(rc))
     # Subscribe (or renew if reconnect).
     #client.subscribe('temp_humidity')
-    client.subscribe('ESP32/battery')
+    client.subscribe(TOPIC)
+    print('Subscribed to {}'.format(TOPIC))
 
 # Callback fires when a published message is received.
 def on_message(client, userdata, msg):
@@ -45,7 +54,7 @@ def on_message(client, userdata, msg):
 client = mqtt.Client()
 client.on_connect = on_connect  # Specify on_connect callback
 client.on_message = on_message  # Specify on_message callback
-client.connect('hc1', 1883, 60)  # Connect to MQTT broker (also running on Pi).
+client.connect(BROKER, 1883, 60)  # Connect to MQTT broker (also running on Pi).
 
 # Processes MQTT network traffic, callbacks and reconnections. (Blocking)
 client.loop_forever()

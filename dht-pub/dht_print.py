@@ -1,7 +1,9 @@
 ### dht_print.py ###
 
-BROKER='hc1'
+#BROKER='hc1'
 TOPIC='esp32/dht22'
+
+from topic_print import BROKER
 
 import paho.mqtt.client as mqtt
 

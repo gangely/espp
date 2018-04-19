@@ -1,7 +1,9 @@
 ### bat_print.py ###
 
-BROKER='hc1'
+#BROKER='hc1'
 TOPIC='esp32/battery'
+
+from topic_print import BROKER
 
 import paho.mqtt.client as mqtt
 
