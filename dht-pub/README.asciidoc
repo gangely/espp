@@ -12,6 +12,7 @@
 ** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
 
 ## software installation 
+NOTE: 20180419 notes common to all subprojects will be moved to link:https://github.com/gangely/espp/wiki/Common-MQTT-installation[Common MQTT installation] page
 
 ### on the ESP32
 prerequisite: have MicroPython installed and accessed through REPL
@@ -53,12 +54,12 @@ copy the files:
 #### Python scripts
 copy the files:
 
-* `bat_print.py`
-* `dht_print.py`
-* `sta_print.py`
+* `bat_print.py`  `dht_print.py`  `sta_print.py`
+* `bat_log.py`  `dht_log.py`  `sta_log.py`  [TODO: log to be reworked]
+* `topic_print.py`
 
 #### parameter to edit
-* in each of the scripts, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
+* in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
 
 ## scripts usage
 
@@ -66,9 +67,11 @@ copy the files:
 
 * in REPL: `import dht_pub`
 * to change the deepsleep length, adjust `SLEEPTIME`; the value is in _minutes_
+* to monitor: the `esperr.log` file; TODO: rewrite log to split in day-by-day files
 
-### on the client machine
+### on client workstation
 
+#### printing on terminals
 * open up to 3 terminals, one for each topic, and launch the requested MQTT client: +
 ----
 python
@@ -77,4 +80,9 @@ python
 ----
 * example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half +
 image:Screenshot_20180320_201506.png[]
+
+#### logging to files
+* the `bat/dht/sta_log.py` scripts are usable; printing is the same than with `*_print.py`, and the messages will be appended to topic log files `espbat.log` `espdht.log` and `espsta.log`; TODO: rewrite log to split in day-by-day files
+
+
 
