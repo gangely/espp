@@ -1,31 +1,26 @@
-# Publish DHT
+= Publish DHT
+gangely
 :TOC:
 
-## info
-* this set of scripts will publish DHT22 temperature and humidity measurements to subscribed MQTT clients, as long as battery or 5VDC measurement, and status messages
+== info
+
+* the set of scripts of the `dht-pub` subproject will publish DHT22 temperature and humidity measurements to subscribed MQTT clients, as long as battery or 5VDC measurement, and status messages; the measurements can be printed on the screen of client workstation(s) or logged to files
 * the MQTT topics are: `esp32/battery`, `esp32/dht`, `esp32/status`
-* this page describes a short HOWTO to set up and run the scripts
-* more notes can be found on the Wiki:
-** link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
-** link:https://github.com/gangely/espp/wiki/MicroPython-uMQTT[MicroPython MQTT libraries]
-** link:https://github.com/gangely/espp/wiki/Mosquitto[Mosquitto]
-** link:https://github.com/gangely/espp/wiki/Paho-MQTT[Paho MQTT Python]
+* 
+* the installation is described in two parts:
+ . the installation common to the other subprojects
+ . the installations of the scripts described on this page in a short HOWTO to set up and run the scripts
 
-## software installation 
-NOTE: 20180419 notes common to other subprojects have been copied to link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation] page
+== common installation
 
-### on the ESP32
-prerequisite: have MicroPython installed and accessed through REPL
+* hardware: link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
+* software: link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation]
 
-#### MQTT libraries
-see the wiki page: link:https://github.com/gangely/espp/wiki/MicroPython-uMQTT[install the MicroPython MQTT libraries]
+== installation of the `dht-pub` scripts 
 
-* `mqtt.simple`
-* `mqtt.robust`
+=== on the ESP32
 
-note: `dht_pub.py` is written with import from `mqtt.robust`, but `mqtt.simple` is ok
-
-#### uPython scripts 
+==== uPython scripts 
 copy the files:
 
 * `../boot/boot.py`
@@ -34,44 +29,35 @@ copy the files:
 * `main.py`
 * `dht_pub.py`
 
-#### parameters to edit
+==== parameters to edit
 
 * `boot.py`: `STAADDR` `STAMASK` `STAGW` `STADNS`
 * `mycredentials.py`: `MYAPSSID` `MYAPPASS`
 * `dht_pub.py`: `BROKER`
 
-### on the broker
+=== on the workstation(s)
 
-#### Mosquitto
-* follow the wiki page: link:https://github.com/gangely/espp/wiki/Mosquitto[install and start Mosquitto]
-
-### on the workstation
-
-#### Python and Paho MQTT
-* prerequisite: have Python 2.7.9+ or Python 3.4+ installed
-* follow the wiki page: link:https://github.com/gangely/espp/wiki/Paho-MQTT[install Paho MQTT client]
-
-#### Python scripts
+==== Python scripts
 copy the files:
 
 * `bat_print.py`  `dht_print.py`  `sta_print.py`
 * `bat_log.py`  `dht_log.py`  `sta_log.py`  [TODO: log to be reworked]
 * `topic_print.py`
 
-#### parameter to edit
+==== parameter to edit
 * in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
 
-## scripts usage
+== scripts usage
 
-### on the ESP32
+=== on the ESP32
 
 * in REPL: `import dht_pub`
 * to change the deepsleep length, adjust `SLEEPTIME`; the value is in _minutes_
 * to monitor: the `esperr.log` file; TODO: rewrite log to split in day-by-day files
 
-### on client workstation
+=== on client workstation
 
-#### printing on terminals
+==== printing on terminals
 * open up to 3 terminals, one for each topic, and launch the requested MQTT client: +
 ----
 python
@@ -81,7 +67,7 @@ python
 * example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half +
 image:Screenshot_20180320_201506.png[]
 
-#### logging to files
+==== logging to files
 * the `bat/dht/sta_log.py` scripts are usable; printing is the same than with `*_print.py`, and the messages will be appended to topic log files `espbat.log` `espdht.log` and `espsta.log`; TODO: rewrite log to split in day-by-day files
 
 
