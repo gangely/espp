@@ -1,9 +1,13 @@
-### esp dht_pub ###
-## main.py
-## gea20180327
+### main.py ###
+## espp dht-pub
+## gea20180422
+
+## history
+# 20180422 daily error log file
+
 
 ### local & user parameters ###
-LOGFILE = "esperr.log"      # error log file
+#LOGFILE = "esperr.log"      # error log file
 #sleeptime=1                # in minutes
 ###
 

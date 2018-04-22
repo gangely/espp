@@ -1,6 +1,6 @@
-### esp dht_pub ###
-## boot.py
-## gea20180407
+### boot.py ###
+## espp
+## gea20180422
 
 # This file is executed on every boot (including wake-boot from deepsleep)
 # 20180222 from tuto boneskull
@@ -9,13 +9,15 @@
 # 20180321 log retries
 # 20180406 APSSID and APPASS imported from mycredentials.py
 # 20180407 no_debug() call moved here
+# 20180422 daily error log file
 
 ### local & user parameters ### 
-STAADDR = '192.168.0.245'           ## for static address ##
+STAADDR = '192.168.0.245'   ## for static address ##
 STAMASK = '255.255.255.0'
 STAGW   = '192.168.0.1'
 STADNS  = '192.168.0.1'
-LOGFILE = "esperr.log"      # error log file
+LOGNAME = "esperr"          # name and ext of error log file
+LOGEXT  = "log"
 ###
 
 ### Access Point ###
@@ -55,6 +57,7 @@ def connect():
             retry = retry + 1
             err = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} waiting connection to AP {}".format(t[0], t[1], t[2], t[4], t[5], t[6], retry))
             print(err)
+            LOGFILE = ("{}-{:04d}{:02d}{:02d}.{}".format(LOGNAME, t[0], t[1], t[2], LOGEXT))
             f = open(LOGFILE, 'a')
             f.write('%s\n' %(err))
             f.close()

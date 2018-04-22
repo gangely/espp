@@ -1,8 +1,13 @@
 ### setrtc.py ###
-## gea20180323 #
+## espp
+## gea20180422 #
+
+## history
+# 20180422 daily error log file
 
 ### local & user parameters ###
-LOGFILE = "esperr.log"      # error log file
+LOGNAME = "esperr"          # name and ext of error log file
+LOGEXT = "log"
 ###
 
 ### RTC ###
@@ -32,6 +37,7 @@ def setrtc():
             retry = retry + 1
             err = ("{:04d}{:02d}{:02d}-{:02d}{:02d}{:02d} retry NTP settime {}".format(t[0], t[1], t[2], t[4], t[5], t[6], retry))
             print(err)
+            LOGFILE = ("{}-{:04d}{:02d}{:02d}.{}".format(LOGNAME, t[0], t[1], t[2], LOGEXT))
             f = open(LOGFILE, 'a')
             f.write('%s\n' %(err))
             f.close()
