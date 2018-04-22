@@ -55,7 +55,7 @@ copy the files:
 
 * in REPL: `import dht_pub`
 * to change the deepsleep length, adjust `SLEEPTIME`; the value is in _minutes_
-* to monitor: the `esperr.log` file; TODO: rewrite log to split in day-by-day files
+* to monitor: the `esperr-YYYYMMDD.log` files
 
 === on client workstation
 
