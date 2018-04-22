@@ -1,7 +1,18 @@
 ### dht_log.py ###
+## gea 20180422 ##
+
+## history
+# moved BROKER in topic_print.py
+# 20180422 daily log file
 
 #BROKER='hc1'
 TOPIC='esp32/dht22'
+
+## log filename ##
+LOGNAME = 'espdht'
+LOGEXT = 'log'
+
+from datetime import datetime
 
 from topic_print import BROKER
 
@@ -47,7 +58,11 @@ def on_message(client, userdata, msg):
 #    display_data(t, h)  # Display data on OLED display.
     message = msg.payload.decode("utf-8")
     print(message)
-    with open('espdht.log', 'a') as f:
+    dt = datetime.now()
+    t = dt.timetuple()
+    LOGFILENAME = ("{}-{:04d}{:02d}{:02d}.{}".format(LOGNAME, t[0], t[1], t[2], LOGEXT))
+    #print("logfilename is", LOGFILENAME)
+    with open(LOGFILENAME, 'a') as f:
         f.write('%s\n' %(message))
 
 client = mqtt.Client()

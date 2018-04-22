@@ -1,7 +1,18 @@
 ### bat_log.py ###
+## gea 20180422 ##
+
+## history
+# moved BROKER in topic_print.py
+# 20180422 daily log file
 
 #BROKER='hc1'
 TOPIC='esp32/battery'
+
+## log filename ##
+LOGNAME = 'espbat'
+LOGEXT = 'log'
+
+from datetime import datetime
 
 from topic_print import BROKER
 
@@ -36,7 +47,6 @@ def display_data(t, h):
 def on_connect(client, userdata, flags, rc):
     print('Connected to', BROKER, 'with result code {0}'.format(rc))
     # Subscribe (or renew if reconnect).
-    #client.subscribe('temp_humidity')
     client.subscribe(TOPIC)
     print('Subscribed to {}'.format(TOPIC))
 
@@ -48,9 +58,13 @@ def on_message(client, userdata, msg):
 #    display_data(t, h)  # Display data on OLED display.
     message = msg.payload.decode("utf-8")
     print(message)
-    with open('espbat.log', 'a') as f:
+    dt = datetime.now()
+    t = dt.timetuple()
+    LOGFILENAME = ("{}-{:04d}{:02d}{:02d}.{}".format(LOGNAME, t[0], t[1], t[2], LOGEXT))
+    #print("logfilename is", LOGFILENAME)
+    with open(LOGFILENAME, 'a') as f:
         f.write('%s\n' %(message))
-    
+
 client = mqtt.Client()
 client.on_connect = on_connect  # Specify on_connect callback
 client.on_message = on_message  # Specify on_message callback

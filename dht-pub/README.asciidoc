@@ -43,7 +43,7 @@ copy the files:
 copy the files:
 
 * `bat_print.py`  `dht_print.py`  `sta_print.py`
-* `bat_log.py`  `dht_log.py`  `sta_log.py`  [TODO: log to be reworked]
+* `bat_log.py`  `dht_log.py`  `sta_log.py`
 * `topic_print.py`
 
 ==== parameter to edit
@@ -70,7 +70,7 @@ python
 image:Screenshot_20180320_201506.png[]
 
 ==== logging to files
-* the `bat/dht/sta_log.py` scripts are usable; printing is the same than with `*_print.py`, and the messages will be appended to topic log files `espbat.log` `espdht.log` and `espsta.log`; TODO: rewrite log to split in day-by-day files
+* use the `bat/dht/sta_log.py` to print in terminal _and_ log the messages to daily log files `espbat-YYYYMMDD.log`, `espdht-YYYYMMDD.log` and `espsta-YYYYMMDD.log`
 
 
 
