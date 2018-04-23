@@ -1,12 +1,114 @@
-# espp - led-dht-ds
+= espp - led-dht-ds
+:TOC:
 
 history:
 
 * 20180411 created a distinct script for deepsleep testing
 * 20180411 more test with deepsleep; client.disconnect() solves the client.connect() problem; working on check_msg()
 * 20180412 determined when a message is accepted
-* 20180423 added persistence to mosquitto and retain to paho
+* 20180423 added persistence to mosquitto and qos=1 + retain to paho
 
-## problem with deepsleep
+== common installation
+
+* hardware: link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
+* software: link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation]
+
+== installation of the `dht-pub` scripts
+
+=== on the ESP32
+
+==== uPython scripts 
+copy the files:
+
+* `../boot/boot.py`
+* `../boot/mycredentials.py`
+* `../common/setrtc.py`
+* `main.py`
+* `led_sub_dht_pub_ds.py`
+
+==== parameters to edit
+
+* `boot.py`: `STAADDR` `STAMASK` `STAGW` `STADNS`
+* `mycredentials.py`: `MYAPSSID` `MYAPPASS`
+* `led_sub_dht_pub_ds.py`: `SERVER`
+
+=== on the workstation(s)
+
+==== Python scripts
+copy the files:
+
+* `dht_print.py`  `sta_print.py`
+* `topic_print.py`
+
+==== parameter to edit
+* in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
+
+== `led-dht-ds` scripts usage
+these scripts are used to:
+
+. test the possibility for the ESP32 to send data and receive commands
+. test the persistence of the commands
+
+=== on the ESP32
+
+* in REPL: `import led_sub_dht_pub_ds`
+* the script will cycle each minute through:
+ . connect, send dht data, check led message
+ . wait 30s with led in last state
+ . 30s deepsleep (led will be off)
+
+=== on the client workstation
+
+==== sending led commands
+* cd to the working copy of `led-dht-ds`
+* start python and import `pub_led_loop` +
+----
+python
+
+>>> import pub_led_loop
+Connected to broker
+Enter the message:
+----
+* accepted messages are: `on`, `off` and `toggle`
+* if on, led will be lit after receiving the message until deepsleep
+* the broker will retain the last message, and resend it each time the ESP32 reconnects and subscribes
+
+==== printing on terminals
+* open up to 2 terminals, one for each topic, and launch the requested MQTT client: +
+----
+python
+
+>>> import sta_print # or dht_print
+----
+
+=== following the status ===
+* on the ESP32: the scripts returns through REPL a lot of messages +
+----
+station active at boot: False                                                                                        [1/1876]
+station connected at boot: False                                                                                             
+connecting to network...
+network config: ('192.168.0.245', '255.255.255.0', '192.168.0.1', '192.168.0.1')
+MQTT client ID is b'30aea4182f60'
+station connected: True
+connecting as MQTT client
+connected as MQTT client
+subcribing to topic
+Connected to 192.168.0.10, subscribed to b'esp32/led' topic
+Failed to read sensor
+24.8,40.6
+checking message
+message received: topic b'esp32/led', message b'on' >> setting led ledstate 1
+led state is 1
+waiting 30s after led change...done
+disconnecting client
+disconnection station...station connected: True
+going to deepsleep
+----
+* on the broker: see the status or the log of mosquitto +
+----
+systemctl status mosquitto
+----
+
+== problem with deepsleep
 
 notes moved on wiki page link:https://github.com/gangely/espp/wiki/DeepSleep[DeepSleep]
