@@ -75,6 +75,7 @@ Connected to broker
 Enter the message:
 ----
 * accepted messages are: `on`, `off` and `toggle`
+* the message is sent with parameters `qos=1` and `Retain=True`
 * if the last message is `on` or `toggle`, the led will be lit in each cycle _after_ receiving the message, and until deepsleep
 * the broker will retain the last message, and resend it each time the ESP32 reconnects and subscribes
 
