@@ -35,7 +35,7 @@ try:
     while True:
  
         value = input('Enter the message: ')
-        client.publish("esp32/led",value)
+        client.publish("esp32/led",value,qos=1,retain=True)
  
 except KeyboardInterrupt:
  
