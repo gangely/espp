@@ -13,7 +13,7 @@ history:
 * hardware: link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
 * software: link:https://github.com/gangely/espp/wiki/MQTT-common-installation[MQTT common installation]
 
-== installation of the `dht-pub` scripts
+== installation of the `led-dht-ds` scripts
 
 === on the ESP32
 
