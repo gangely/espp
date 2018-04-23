@@ -1,5 +1,5 @@
-### esp led_dht ###
-## main.py
+### main.py ###
+## project espp led-dht-ds ##
 ## gea20180407
 
 ## history

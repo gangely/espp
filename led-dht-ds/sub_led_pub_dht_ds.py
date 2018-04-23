@@ -1,4 +1,6 @@
-# sub_led_pub_dht_ds.py
+### sub_led_pub_dht_ds.py
+## project espp/led-dht-ds
+## gea20180423
 # further development with deepsleep
 # uses mqtt.simple
 # topics esp32/led esp32/temp_humidity esp32/sta
@@ -19,28 +21,30 @@
 # => DON'T use publishing while in callback
 # 20180405 problem?? free GC is lowering by 256 at each pass
 # 20180407 with deepsleep:
-#   * MQTT raises sometimes (often) an OSError 118 and stops with "no AP found" message
-#   * no message are found by check.msg(), even when called twice; ok with wait_msg()
+#        * MQTT raises sometimes (often) an OSError 118 and stops with "no AP found" message
+#        * no message are found by check.msg(), even when called twice; ok with wait_msg()
 # 20180407 added mqtt_connect() to catch OSError 118; observing up to 4 retries
 # 20180410 publish 'connected' message
 # 20180410 mqtt_connect(): with a 100ms sleep, # retries is down to 1  
 # 20180410 check_msg() does not work more by placing it after publish
 # 20180411 disconnecting before deepsleep
-#   * client.disconnect() has a positive effect: at first, no more retry of mqtt_connect(), except when restarting the script !!
-#   * station.disconnect() seems to have no effect: station.isconnected() reports True ??
+#        * client.disconnect() has a positive effect: at first, no more retry of mqtt_connect(), except when restarting the script !!
+#        * station.disconnect() seems to have no effect: station.isconnected() reports True ??
 # 20180411 reuse mqttconnect() from sub_led_deepsleep.py (with limited count)
 # 20180411 more test with check.msg() in a counted loop: messages sent before the loop are not catched
 # 20180412 use wait(testpoint) to determine when a message is accepted
-#   * messages from a topic are accepted right after the subscription
-#   * messages can be queued
-#   * messages will be processed by subsequent wait_msg or check_msg
-#   * non processed messages are lost by deepsleep
+#        * messages from a topic are accepted right after the subscription
+#        * messages can be queued
+#        * messages will be processed by subsequent wait_msg or check_msg
+#        * non processed messages are lost by deepsleep
+# 20180423 edited TOPICDHT; replaced TOPICLED
+#        * broker set with persistence => suppress some wait(), change timing, remove mem_info
 
 ### user definitions ###
 # Default MQTT server to connect to
 SERVER = "192.168.0.10"
-TOPIC = b"esp32/led"
-TOPICDHT = b'esp32/temp_humidity'
+TOPICLED = b"esp32/led"
+TOPICDHT = b'esp32/dht22'
 #TOPICBAT = b'esp32/battery'
 TOPICSTA = b'esp32/status'
 QOSDHT = 0
@@ -48,7 +52,7 @@ QOSDHT = 0
 QOSSTA = 0
 
 # Other
-mqttretry = 5
+mqttretry = 3
 
 ### sleep deepsleep ###
 from time import sleep
@@ -201,8 +205,8 @@ def publish_dht():
 
 ### waiting for test ###
 def wait(testpoint):
-    print('waiting 10s after {}...'.format(testpoint), end='')
-    sleep(10)
+    print('waiting 30s after {}...'.format(testpoint), end='')
+    sleep(30)
     print('done')
 
 
@@ -213,22 +217,22 @@ def wait(testpoint):
 
 def main(server=SERVER):
     print('station connected:', station.isconnected())
-    wait('station connected')
+    #wait('station connected')
     #client = MQTTClient(CLIENT_ID, server)
     # Subscribed messages will be delivered to this callback
     client.set_callback(sub_cb)
     #print("connecting MQTT client")     ### 20180407 with deepsleep OSError 118 after this message ###
     #client.connect()
     mqtt_connect()
-    wait('mqtt connected')
+    #wait('mqtt connected')
     print("subcribing to topic")
-    client.subscribe(TOPIC)
-    print_pub_status("Connected to {}, subscribed to {} topic".format(server, TOPIC))
-    wait('subscribed to topic') 
+    client.subscribe(TOPICLED)
+    print_pub_status("Connected to {}, subscribed to {} topic".format(server, TOPICLED))
+    #wait('subscribed to topic') 
     try:
         # this is the main loop #
         while 1:
-            micropython.mem_info()
+            #micropython.mem_info()
             # 1. publish dht
             publish_dht()
             # 2. check message -> led on/off/toggle
@@ -244,7 +248,7 @@ def main(server=SERVER):
             #print('\r')
             # 3. publish led status
             print_pub_status("led state is {}".format(ledstate))
-            wait('last led change')
+            wait('led change')
             print_pub_status('disconnecting client')
             client.disconnect()
             sleep(1)
@@ -254,7 +258,7 @@ def main(server=SERVER):
             sleep(1)
             print('station connected:', station.isconnected())
             print('going to deepsleep')
-            deepsleep(10000)
+            deepsleep(30000)
     finally:
         client.disconnect()
         print('station connected:', station.isconnected())
