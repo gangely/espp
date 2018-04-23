@@ -8,6 +8,14 @@ history:
 * 20180412 determined when a message is accepted
 * 20180423 added persistence to mosquitto and qos=1 + retain to paho
 
+== short description ==
+the `led-dht-ds` scripts are used to:
+
+. learn sending data _and_ receiving commands within the same script on the ESP32
+. test the persistence of the commands
+
+the topics used are: `esp32/led`, `esp32/sta` and `esp32/dht22`
+
 == common installation
 
 * hardware: link:https://github.com/gangely/espp/wiki/Hardware-Setup[Hardware Setup for the DHT22 and the ADC input]
@@ -44,10 +52,6 @@ copy the files:
 * in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
 
 == `led-dht-ds` scripts usage
-these scripts are used to:
-
-. test the possibility for the ESP32 to send data and receive commands
-. test the persistence of the commands
 
 === on the ESP32
 
@@ -56,6 +60,7 @@ these scripts are used to:
  . connect, send dht data, check led message
  . wait 30s with led in last state
  . 30s deepsleep (led will be off)
+* watch the `esperr-YYYYMMDD.log` file
 
 === on the client workstation
 
@@ -70,7 +75,7 @@ Connected to broker
 Enter the message:
 ----
 * accepted messages are: `on`, `off` and `toggle`
-* if on, led will be lit after receiving the message until deepsleep
+* if the last message is `on` or `toggle`, the led will be lit in each cycle _after_ receiving the message, and until deepsleep
 * the broker will retain the last message, and resend it each time the ESP32 reconnects and subscribes
 
 ==== printing on terminals
