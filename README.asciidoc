@@ -4,6 +4,7 @@ using ESP32 with MicroPython
 
 * please find on this page a brief description of the subfolders
 * see more notes in each of the subfolders README and in the link:https://github.com/gangely/espp/wiki/[wiki pages]
+* present status: `dht-pub` is ready to be used, and `led-dht-ds` is been worked on
 
 ## subfolders
 
