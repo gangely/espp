@@ -5,9 +5,10 @@ gangely
 == info
 
 * this set of scripts will publish DHT22 temperature and humidity measurements to subscribed MQTT clients, as long as battery or 5VDC measurement, and status messages
-* the measurements can be printed on the screen of any client workstation or logged to files
+* the measurements can be printed on the screen of any client workstation and logged to files
+* after each set of measurements, the ESP32 will enter deepsleep; the sleep time is set in minutes
 * the MQTT topics are: `esp32/battery`, `esp32/dht`, `esp32/status`
-* the installation is described in two parts, followed by a short HOWTO run the scripts
+* the installation is described in two parts, followed by a short HOW-TO run the scripts:
 
  a. the installation common to the other subprojects
  a. the installation of the `dht-pub` scripts
