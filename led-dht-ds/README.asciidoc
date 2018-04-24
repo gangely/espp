@@ -8,13 +8,18 @@ history:
 * 20180412 determined when a message is accepted
 * 20180423 added persistence to mosquitto and qos=1 + retain to paho
 
-== short description ==
-the `led-dht-ds` scripts are used to:
-
-. learn sending data _and_ receiving commands within the same script on the ESP32
-. test the persistence of the commands
-
-the topics used are: `esp32/led`, `esp32/sta` and `esp32/dht22`
+== info ==
+* in their present state, the `led-dht-ds` scripts are aimed to: +
+ . learn sending data _and_ receiving commands within the same script on the ESP32
+ . test the persistence of the commands
+* the ESP32 will cycle each minute through: +
+ . connect, send dht data, check led message
+ . wait 30s with led in last state
+ . 30s deepsleep (led will be off)
+* on client workstation, scripts will allow to: +
+ - command the led
+ - print the status and the DHT22 measured values
+* the topics used are: `esp32/led`, `esp32/sta` and `esp32/dht22`
 
 == common installation
 
@@ -45,10 +50,12 @@ copy the files:
 ==== Python scripts
 copy the files:
 
+* `pub_led_loop.py`
 * `dht_print.py`  `sta_print.py`
 * `topic_print.py`
 
 ==== parameter to edit
+* in `pub_led_loop.py`, edit `broker_address`; address format can be `<hostname>` or `<111.222.333.444>`; TODO: change the name
 * in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
 
 == `led-dht-ds` scripts usage
@@ -56,10 +63,6 @@ copy the files:
 === on the ESP32
 
 * in REPL: `import led_sub_dht_pub_ds`
-* the script will cycle each minute through:
- . connect, send dht data, check led message
- . wait 30s with led in last state
- . 30s deepsleep (led will be off)
 * watch the `esperr-YYYYMMDD.log` file
 
 === on the client workstation
