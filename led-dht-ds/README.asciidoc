@@ -56,7 +56,8 @@ copy the files:
 * `topic_print.py`
 
 ==== parameter to edit
-edit `BROKER` in: +
+edit `BROKER` in:
+
 * `pub_led_loop.py` 
 * `topic_print.py`
 
