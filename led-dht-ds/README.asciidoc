@@ -6,7 +6,7 @@ history:
 * 20180411 created a distinct script for deepsleep testing
 * 20180411 more test with deepsleep; client.disconnect() solves the client.connect() problem; working on check_msg()
 * 20180412 determined when a message is accepted
-* 20180423 added persistence to mosquitto and qos=1 + retain to paho
+* 20180423 added persistence to mosquitto and qos=1 + retain to paho script `pub_led_loop.py`
 
 == info ==
 * in their present state, the `led-dht-ds` scripts are aimed to: +
