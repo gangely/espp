@@ -7,6 +7,7 @@ history:
 * 20180411 more test with deepsleep; client.disconnect() solves the client.connect() problem; working on check_msg()
 * 20180412 determined when a message is accepted
 * 20180423 added persistence to mosquitto and qos=1 + retain to paho script `pub_led_loop.py`
+* 20180424 renamed BROKER .. in `pub_led_loop.py`
 
 == info ==
 * in their present state, the `led-dht-ds` scripts are aimed to: +
@@ -55,8 +56,11 @@ copy the files:
 * `topic_print.py`
 
 ==== parameter to edit
-* in `pub_led_loop.py`, edit `broker_address`; address format can be `<hostname>` or `<111.222.333.444>`; TODO: change the name
-* in `topic_print.py`, edit `BROKER`; address format can be `<hostname>` or `<111.222.333.444>`
+edit `BROKER` in: +
+* `pub_led_loop.py` 
+* `topic_print.py`
+
+address format can be `<hostname>` or `<111.222.333.444>`
 
 == `led-dht-ds` scripts usage
 

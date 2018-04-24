@@ -1,10 +1,11 @@
 # espp
 
-using ESP32 with MicroPython
+this project is about using ESP32 with MQTT; the development is in Python and, on the ESP32, in MicroPython
 
 * please find on this page a brief description of the subfolders
+* some subfolders hold subprojects, others shared libraries
 * see more notes in each of the subfolders README and in the link:https://github.com/gangely/espp/wiki/[wiki pages]
-* present status: `dht-pub` is ready to be used, and `led-dht-ds` is been worked on
+* present status: the subproject `dht-pub` is ready to be used, and `led-dht-ds` is been worked on
 
 ## subfolders
 
