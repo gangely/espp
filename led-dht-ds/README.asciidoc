@@ -74,7 +74,8 @@ address format can be `<hostname>` or `<111.222.333.444>`
 
 ==== sending led commands
 * cd to the working copy of `led-dht-ds`
-* start python and import `pub_led_loop` +
+* start python and import `pub_led_loop` 
++
 ----
 python
 
@@ -88,7 +89,8 @@ Enter the message:
 * the broker will retain the last message, and resend it each time the ESP32 reconnects and subscribes
 
 ==== printing on terminals
-* open up to 2 terminals, one for each topic, and launch the requested MQTT client: +
+* open up to 2 terminals, one for each topic, and launch the requested MQTT client: 
++
 ----
 python
 
@@ -96,7 +98,8 @@ python
 ----
 
 === following the status ===
-* on the ESP32: the scripts returns through REPL a lot of messages +
+* on the ESP32: the scripts returns through REPL a lot of messages 
++
 ----
 station active at boot: False                                                                                        [1/1876]
 station connected at boot: False                                                                                             
@@ -118,7 +121,8 @@ disconnecting client
 disconnection station...station connected: True
 going to deepsleep
 ----
-* on the broker: see the status or the log of mosquitto +
+* on the broker: see the status or the log of mosquitto 
++
 ----
 systemctl status mosquitto
 ----
