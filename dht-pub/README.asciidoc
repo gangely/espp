@@ -9,10 +9,10 @@ gangely
 * after each set of measurements, the ESP32 will enter deepsleep; the sleep time is set in minutes
 * the MQTT topics are: `esp32/battery`, `esp32/dht`, `esp32/status`
 * the installation is described in two parts, followed by a short HOW-TO run the scripts:
-
- a. the installation common to the other subprojects
- a. the installation of the `dht-pub` scripts
- a. `dht-pub` scripts usage
+[arabic]
+  . the installation common to the other subprojects
+  . the installation of the `dht-pub` scripts
+  . `dht-pub` scripts usage
 
 == common installation
 
@@ -61,13 +61,15 @@ copy the files:
 === on client workstation
 
 ==== printing on terminals
-* open up to 3 terminals, one for each topic, and launch the requested MQTT client: +
+* open up to 3 terminals, one for each topic, and launch the requested MQTT client: 
++
 ----
 python
 
 >>> import dht_print # or bat_print or sta_print
 ----
-* example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half +
+* example with `tmux`: ESP32 REPL in upper half; 3 MQTT clients in lower half
++
 image:Screenshot_20180320_201506.png[]
 
 === on a server or a 24/7 machine
@@ -77,8 +79,8 @@ image:Screenshot_20180320_201506.png[]
 * the logging scripts should be run on a 24/7 machine, a.e. a server (the broker will be fine); if the machine is headless, start the script in ssh
 * tip: a multi terminal tool such as `tmux` will use a single ssh link to operate, and will allow to easily detach/reattach all the terminals at once
 * MQTT by itself, and these scripts are very resilient:
- . they can be left running in background, even if the ESP32 is disconnected
- . logging to the files will be resumed when the ESP32 is reconnected; new files will be started if the date has changed
+. they can be left running in background, even if the ESP32 is disconnected
+. logging to the files will be resumed when the ESP32 is reconnected; new files will be started if the date has changed
 
 
 
